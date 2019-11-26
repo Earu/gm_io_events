@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseWithSymbols|x64">
+      <Configuration>ReleaseWithSymbols</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseWithSymbols|Win32">
+      <Configuration>ReleaseWithSymbols</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C0386793-2C4F-6529-75C6-F04AE11B36B1}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>gmsv_gm_io_events</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>x86_64\Release\</OutDir>
+    <IntDir>x86_64\Release\intermediate\gmsv_gm_io_events\</IntDir>
+    <TargetName>gmsv_gm_io_events_win64</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\server;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>x86\Release\</OutDir>
+    <IntDir>x86\Release\intermediate\gmsv_gm_io_events\</IntDir>
+    <TargetName>gmsv_gm_io_events_win32</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\server;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>x86_64\ReleaseWithSymbols\</OutDir>
+    <IntDir>x86_64\ReleaseWithSymbols\intermediate\gmsv_gm_io_events\</IntDir>
+    <TargetName>gmsv_gm_io_events_win64</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\server;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>x86\ReleaseWithSymbols\</OutDir>
+    <IntDir>x86\ReleaseWithSymbols\intermediate\gmsv_gm_io_events\</IntDir>
+    <TargetName>gmsv_gm_io_events_win32</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\server;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>x86_64\Debug\</OutDir>
+    <IntDir>x86_64\Debug\intermediate\gmsv_gm_io_events\</IntDir>
+    <TargetName>gmsv_gm_io_events_win64</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\server;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>x86\Debug\</OutDir>
+    <IntDir>x86\Debug\intermediate\gmsv_gm_io_events\</IntDir>
+    <TargetName>gmsv_gm_io_events_win32</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\server;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_SERVER;IS_SERVERSIDE=true;GMOD_USE_SOURCESDK;GAME_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86_64\Release\gmsv_gm_io_events_win64.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_SERVER;IS_SERVERSIDE=true;GMOD_USE_SOURCESDK;GAME_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86\Release\gmsv_gm_io_events_win32.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_SERVER;IS_SERVERSIDE=true;GMOD_USE_SOURCESDK;GAME_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86_64\ReleaseWithSymbols\gmsv_gm_io_events_win64.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_SERVER;IS_SERVERSIDE=true;GMOD_USE_SOURCESDK;GAME_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86\ReleaseWithSymbols\gmsv_gm_io_events_win32.lib</ImportLibrary>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_SERVER;IS_SERVERSIDE=true;GMOD_USE_SOURCESDK;GAME_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86_64\Debug\gmsv_gm_io_events_win64.lib</ImportLibrary>
+      <AdditionalOptions>/NODEFAULTLIB:"libcmt" %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_SERVER;IS_SERVERSIDE=true;GMOD_USE_SOURCESDK;GAME_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86\Debug\gmsv_gm_io_events_win32.lib</ImportLibrary>
+      <AdditionalOptions>/SAFESEH:NO /NODEFAULTLIB:"libcmt" %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\lua_shared.vcxproj">
+      <Project>{5D4BA350-4903-E59D-B20A-BEF99EE17F8E}</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\scanning.vcxproj">
+      <Project>{1675544C-0242-AF57-2B5B-9DFF1787E4E5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\detouring.vcxproj">
+      <Project>{76548795-E2BE-3B0C-2BFD-ECB197A61961}</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\tier1.vcxproj">
+      <Project>{EA6A6D10-567F-95C1-1F01-39218BD491F2}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
