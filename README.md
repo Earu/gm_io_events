@@ -1,2 +1,4 @@
 # io_events
-Garry's Mod module for that will run hooks upon file system changes
+Garry's Mod module that will run hooks on the lua side upon file system changes.
+
+Note: This is still WIP.
