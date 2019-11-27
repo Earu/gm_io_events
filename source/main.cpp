@@ -2,9 +2,9 @@
 #include <GarrysMod/Lua/Interface.h>
 #include <eiface.h>
 #include <dbg.h>
-#include "filewatch.hpp"
+#include <filewatch.hpp>
 
-std::string GetGamePath(GarrysMod::Lua::ILuaBase *LUA) 
+std::string GetGamePath(GarrysMod::Lua::ILuaBase* LUA) 
 {
 	SourceSDK::FactoryLoader engine_loader("engine");
 	IVEngineServer* engine_server = engine_loader.GetInterface<IVEngineServer>(INTERFACEVERSION_VENGINESERVER);
@@ -19,39 +19,55 @@ std::string GetGamePath(GarrysMod::Lua::ILuaBase *LUA)
 	return game_dir;
 }
 
+void HookRun(GarrysMod::Lua::ILuaBase* LUA, const char* path, const char* event_type)
+{
+	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
+		LUA->GetField(-1, "hook");
+			LUA->GetField(-1, "Run");
+				LUA->PushString("FileChange");
+				LUA->PushString(path);
+				LUA->PushString(event_type);
+			LUA->Call(3, 0);
+	LUA->Pop();
+}
+
+filewatch::FileWatch<std::string> *watcher;
 GMOD_MODULE_OPEN()
 {
 	std::string game_dir = GetGamePath(LUA);
-	std::string watch_dir = game_dir.append("/lua/minge/config.json");
 
-	filewatch::FileWatch<std::string>(watch_dir, [](const std::string &path, const filewatch::Event event_type) {
-		Msg(path.c_str());
+	watcher = new filewatch::FileWatch<std::string>(game_dir, std::regex(".*"), [LUA](const std::string& path, const filewatch::Event event_type) {
+		const char* type;
 		switch (event_type) {
 			case filewatch::Event::added:
-				Msg(" ADD\n");
+				type = "ADD";
 				break;
 			case filewatch::Event::modified:
-				Msg(" MODIFY\n");
+				type = "MODIFY";
 				break;
 			case filewatch::Event::removed:
-				Msg(" REMOVE\n");
+				type = "REMOVE";
 				break;
 			case filewatch::Event::renamed_new:
-				Msg(" RENAME NEW\n");
+				type = "RENAME_NEW";
 				break;
 			case filewatch::Event::renamed_old:
-				Msg(" RENAME OLD\n");
+				type = "RENAME_OLD";
 				break;
 			default:
-				Msg(" UNKNOWN\n");
+				type = "UNKNOWN";
 				break;
 		}
+
+		HookRun(LUA, path.c_str(), type);
 	});
 
 	return 0;
 }
 
-GMOD_MODULE_CLOSE( )
+GMOD_MODULE_CLOSE()
 {
+	watcher->~FileWatch();
+
 	return 0;
 }
