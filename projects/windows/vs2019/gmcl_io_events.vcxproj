@@ -27,10 +27,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{661C6E0E-D232-6CA4-1BAA-F7C587FF3C2C}</ProjectGuid>
+    <ProjectGuid>{D36F751C-BF3D-6922-A8D1-D948943E4587}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>gmcl_gm_io_events</RootNamespace>
+    <RootNamespace>gmcl_io_events</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -96,48 +96,48 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>x86_64\Release\</OutDir>
-    <IntDir>x86_64\Release\intermediate\gmcl_gm_io_events\</IntDir>
-    <TargetName>gmcl_gm_io_events_win64</TargetName>
+    <IntDir>x86_64\Release\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win64</TargetName>
     <TargetExt>.dll</TargetExt>
     <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>x86\Release\</OutDir>
-    <IntDir>x86\Release\intermediate\gmcl_gm_io_events\</IntDir>
-    <TargetName>gmcl_gm_io_events_win32</TargetName>
+    <IntDir>x86\Release\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win32</TargetName>
     <TargetExt>.dll</TargetExt>
     <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>x86_64\ReleaseWithSymbols\</OutDir>
-    <IntDir>x86_64\ReleaseWithSymbols\intermediate\gmcl_gm_io_events\</IntDir>
-    <TargetName>gmcl_gm_io_events_win64</TargetName>
+    <IntDir>x86_64\ReleaseWithSymbols\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win64</TargetName>
     <TargetExt>.dll</TargetExt>
     <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>x86\ReleaseWithSymbols\</OutDir>
-    <IntDir>x86\ReleaseWithSymbols\intermediate\gmcl_gm_io_events\</IntDir>
-    <TargetName>gmcl_gm_io_events_win32</TargetName>
+    <IntDir>x86\ReleaseWithSymbols\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win32</TargetName>
     <TargetExt>.dll</TargetExt>
     <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>x86_64\Debug\</OutDir>
-    <IntDir>x86_64\Debug\intermediate\gmcl_gm_io_events\</IntDir>
-    <TargetName>gmcl_gm_io_events_win64</TargetName>
+    <IntDir>x86_64\Debug\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win64</TargetName>
     <TargetExt>.dll</TargetExt>
     <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>x86\Debug\</OutDir>
-    <IntDir>x86\Debug\intermediate\gmcl_gm_io_events\</IntDir>
-    <TargetName>gmcl_gm_io_events_win32</TargetName>
+    <IntDir>x86\Debug\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win32</TargetName>
     <TargetExt>.dll</TargetExt>
     <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -145,7 +145,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
@@ -166,14 +166,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86_64\Release\gmcl_gm_io_events_win64.lib</ImportLibrary>
+      <ImportLibrary>x86_64\Release\gmcl_io_events_win64.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
@@ -195,14 +195,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86\Release\gmcl_gm_io_events_win32.lib</ImportLibrary>
+      <ImportLibrary>x86\Release\gmcl_io_events_win32.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -219,14 +219,14 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86_64\ReleaseWithSymbols\gmcl_gm_io_events_win64.lib</ImportLibrary>
+      <ImportLibrary>x86_64\ReleaseWithSymbols\gmcl_io_events_win64.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -244,7 +244,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86\ReleaseWithSymbols\gmcl_gm_io_events_win32.lib</ImportLibrary>
+      <ImportLibrary>x86\ReleaseWithSymbols\gmcl_io_events_win32.lib</ImportLibrary>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -252,7 +252,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -269,7 +269,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86_64\Debug\gmcl_gm_io_events_win64.lib</ImportLibrary>
+      <ImportLibrary>x86_64\Debug\gmcl_io_events_win64.lib</ImportLibrary>
       <AdditionalOptions>/NODEFAULTLIB:"libcmt" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -277,7 +277,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;GM_IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -295,19 +295,16 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86\Debug\gmcl_gm_io_events_win32.lib</ImportLibrary>
+      <ImportLibrary>x86\Debug\gmcl_io_events_win32.lib</ImportLibrary>
       <AdditionalOptions>/SAFESEH:NO /NODEFAULTLIB:"libcmt" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\lua_shared.vcxproj">
       <Project>{5D4BA350-4903-E59D-B20A-BEF99EE17F8E}</Project>
-    </ProjectReference>
-    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\scanning.vcxproj">
-      <Project>{1675544C-0242-AF57-2B5B-9DFF1787E4E5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\detouring.vcxproj">
-      <Project>{76548795-E2BE-3B0C-2BFD-ECB197A61961}</Project>
     </ProjectReference>
     <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\tier1.vcxproj">
       <Project>{EA6A6D10-567F-95C1-1F01-39218BD491F2}</Project>
