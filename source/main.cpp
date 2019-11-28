@@ -31,19 +31,12 @@ void HookRun(GarrysMod::Lua::ILuaBase* LUA, const char* path, const char* event_
 	LUA->Pop();
 }
 
-void StringToWString(std::wstring& ws, const std::string& s)
-{
-	std::wstring wsTmp(s.begin(), s.end());
-	ws = wsTmp;
-}
-
-filewatch::FileWatch<std::wstring> *watcher;
+filewatch::FileWatch<std::string> *watcher;
 GMOD_MODULE_OPEN()
 {
-	std::wstring game_dir = nullptr;
-	StringToWString(game_dir, GetGamePath(LUA));
+	std::string game_dir = GetGamePath(LUA);
 
-	watcher = new filewatch::FileWatch<std::wstring>(game_dir, std::wregex(L".*"), [LUA](const std::wstring& path, const filewatch::Event event_type) {
+	watcher = new filewatch::FileWatch<std::string>(game_dir, std::regex(".*"), [LUA](const std::string& path, const filewatch::Event event_type) {
 		const char* type;
 		switch (event_type) {
 			case filewatch::Event::added:
@@ -66,10 +59,7 @@ GMOD_MODULE_OPEN()
 				break;
 		}
 
-		const wchar_t* str = path.c_str();
-		char* dest;
-		std::wcstombs(dest, str, path.length());
-		HookRun(LUA, dest, type);
+		HookRun(LUA, path.c_str(), type);
 	});
 
 	return 0;

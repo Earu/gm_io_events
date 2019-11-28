@@ -120,7 +120,7 @@ namespace filewatch {
 		bool _watching_single_file = false;
 		T _filename;
 
-		std::atomic<bool> _destory = false;
+		std::atomic<bool> _destroy = false;
 		std::function<void(const T & file, const Event event_type)> _callback;
 
 		std::thread _watch_thread;
@@ -305,14 +305,14 @@ namespace filewatch {
 		{
 			std::vector<BYTE> buffer(_buffer_size);
 			DWORD bytes_returned = 0;
-			OVERLAPPED overlapped_buffer(0);
+			OVERLAPPED overlapped_buffer{ 0 };
 
 			overlapped_buffer.hEvent = CreateEvent(nullptr, true, false, nullptr);
 			if (!overlapped_buffer.hEvent) {
 				std::cerr << "Error creating monitor event" << std::endl;
 			}
 
-			std::array<HANDLE, 2> handles(overlapped_buffer.hEvent, _close_event);
+			std::array<HANDLE, 2> handles{ overlapped_buffer.hEvent, _close_event };
 
 			auto async_pending = false;
 			_running.set_value();
@@ -435,7 +435,7 @@ namespace filewatch {
 			std::vector<char> buffer(_buffer_size);
 
 			_running.set_value();
-			while (_destory == false)
+			while (_destroy == false)
 			{
 				const auto length = read(_directory.folder, static_cast<void*>(buffer.data()), buffer.size());
 				if (length > 0)
@@ -479,10 +479,10 @@ namespace filewatch {
 
 		void callback_thread()
 		{
-			while (_destory == false) {
+			while (_destroy == false) {
 				std::unique_lock<std::mutex> lock(_callback_mutex);
-				if (_callback_information.empty() && _destory == false) {
-					_cv.wait(lock, [this] { return _callback_information.size() > 0 || _destory; });
+				if (_callback_information.empty() && _destroy == false) {
+					_cv.wait(lock, [this] { return _callback_information.size() > 0 || _destroy; });
 				}
 				decltype(_callback_information) callback_information = {};
 				std::swap(callback_information, _callback_information);
