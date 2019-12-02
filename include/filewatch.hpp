@@ -56,15 +56,11 @@ namespace filewatch {
 	* \author Thomas Monkman
 	*
 	*/
-	template<class T>
 	class FileWatch
 	{
-		typedef std::basic_string<typename T::value_type, std::char_traits<typename T::value_type>> UnderpinningString;
-		typedef std::basic_regex<typename T::value_type, std::regex_traits<typename T::value_type>> UnderpinningRegex;
-
 	public:
 
-		FileWatch(T path, UnderpinningRegex pattern, std::function<void(const T & file, const Event event_type)> callback) :
+		FileWatch(std::string path, std::regex pattern, std::function<void(const std::string & file, const Event event_type)> callback) :
 			_path(path),
 			_pattern(pattern),
 			_callback(callback),
@@ -74,20 +70,20 @@ namespace filewatch {
 		}
 
 #if defined _WIN32 && (defined UNICODE || defined _UNICODE)
-		FileWatch(T path, std::function<void(const T & file, const Event event_type)> callback) :
-			FileWatch<T>(path, UnderpinningRegex(L".*"), callback) {}
+		FileWatch(std::string path, std::function<void(const std::string & file, const Event event_type)> callback) :
+			FileWatch(path, std::regex(L".*"), callback) {}
 #else // _WIN32 && (UNICODE || _UNICODE)
-		FileWatch(T path, std::function<void(const T & file, const Event event_type)> callback) :
-			FileWatch<T>(path, UnderpinningRegex(".*"), callback) {}
+		FileWatch(std::string path, std::function<void(const std::string & file, const Event event_type)> callback) :
+			FileWatch(path, std::regex(".*"), callback) {}
 #endif
 
 		~FileWatch() {
 			destroy();
 		}
 
-		FileWatch(const FileWatch<T>& other) : FileWatch<T>(other._path, other._callback) {}
+		FileWatch(const FileWatch& other) : FileWatch(other._path, other._callback) {}
 
-		FileWatch<T>& operator=(const FileWatch<T>& other)
+		FileWatch& operator=(const FileWatch& other)
 		{
 			if (this == &other) { return *this; }
 
@@ -100,34 +96,34 @@ namespace filewatch {
 		}
 
 		// Const memeber varibles don't let me implent moves nicely, if moves are really wanted std::unique_ptr should be used and move that.
-		FileWatch<T>(FileWatch<T>&&) = delete;
-		FileWatch<T>& operator=(FileWatch<T>&&) & = delete;
+		FileWatch(FileWatch&&) = delete;
+		FileWatch& operator=(FileWatch&&) & = delete;
 
 	private:
 		struct PathParts
 		{
-			PathParts(T directory, T filename) : directory(directory), filename(filename) {}
-			T directory;
-			T filename;
+			PathParts(std::string directory, std::string filename) : directory(directory), filename(filename) {}
+			std::string directory;
+			std::string filename;
 		};
-		const T _path;
+		std::string _path;
 
-		UnderpinningRegex _pattern;
+		std::regex _pattern;
 
 		static constexpr std::size_t _buffer_size = 1024 * 256;
 
 		// only used if watch a single file
 		bool _watching_single_file = false;
-		T _filename;
+		std::string _filename;
 
 		std::atomic<bool> _destroy = false;
-		std::function<void(const T & file, const Event event_type)> _callback;
+		std::function<void(const std::string& file, const Event event_type)> _callback;
 
 		std::thread _watch_thread;
 
 		std::condition_variable _cv;
 		std::mutex _callback_mutex;
-		std::vector<std::pair<T, Event>> _callback_information;
+		std::vector<std::pair<std::string, Event>> _callback_information;
 		std::thread _callback_thread;
 
 		std::promise<void> _running;
@@ -221,9 +217,9 @@ namespace filewatch {
 #endif // __unix__
 		}
 
-		const PathParts split_directory_and_file(const T& path) const
+		const PathParts split_directory_and_file(const std::string& path) const
 		{
-			const auto predict = [](typename T::value_type character) {
+			const auto predict = [](typename std::string::value_type character) {
 #ifdef _WIN32
 				return character == _T('\\') || character == _T('/');
 #elif __unix__
@@ -232,27 +228,27 @@ namespace filewatch {
 			};
 #ifdef _WIN32
 #define _UNICODE
-			const UnderpinningString this_directory = _T("./");
+			const std::string this_directory = _T("./");
 #elif __unix__
-			const UnderpinningString this_directory = "./";
+			const std::string this_directory = "./";
 #endif // __unix__
 
 			const auto pivot = std::find_if(path.rbegin(), path.rend(), predict).base();
 			//if the path is something like "test.txt" there will be no directoy part, however we still need one, so insert './'
-			const T directory;
+			std::string directory;
 			{
-				const auto extracted_directory = UnderpinningString(path.begin(), pivot);
+				const auto extracted_directory = std::string(path.begin(), pivot);
 				directory = (extracted_directory.size() > 0) ? extracted_directory : this_directory;
 			};
 
-			const T filename = UnderpinningString(pivot, path.end());
+			const std::string filename = std::string(pivot, path.end());
 			return PathParts(directory, filename);
 		}
 
-		bool pass_filter(const UnderpinningString& file_path)
+		bool pass_filter(const std::string& file_path)
 		{
 			if (_watching_single_file) {
-				const UnderpinningString extracted_filename = { split_directory_and_file(file_path).filename };
+				const std::string extracted_filename = { split_directory_and_file(file_path).filename };
 				//if we are watching a single file, only that file should trigger action
 				return extracted_filename == _filename;
 			}
@@ -261,7 +257,7 @@ namespace filewatch {
 		}
 
 #ifdef _WIN32
-		HANDLE get_directory(const T& path)
+		HANDLE get_directory(const std::string& path)
 		{
 			auto file_info = GetFileAttributes(path.c_str());
 			if (file_info == INVALID_FILE_ATTRIBUTES)
@@ -269,7 +265,7 @@ namespace filewatch {
 				throw std::system_error(GetLastError(), std::system_category());
 			}
 
-			T watch_path;
+			std::string watch_path;
 			{
 				_watching_single_file = (file_info & FILE_ATTRIBUTE_DIRECTORY) == false;
 				if (_watching_single_file)
@@ -317,7 +313,7 @@ namespace filewatch {
 			auto async_pending = false;
 			_running.set_value();
 			do {
-				std::vector<std::pair<T, Event>> parsed_information;
+				std::vector<std::pair<std::string, Event>> parsed_information;
 				ReadDirectoryChangesW(
 					_directory,
 					buffer.data(), buffer.size(),
@@ -345,10 +341,10 @@ namespace filewatch {
 						FILE_NOTIFY_INFORMATION* file_information = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(&buffer[0]);
 						do
 						{
-							UnderpinningString changed_file(file_information->FileName, file_information->FileNameLength / 2);
+							std::string changed_file((const char*)file_information->FileName - 1, file_information->FileNameLength / 2);
 							if (pass_filter(changed_file))
 							{
-								parsed_information.emplace_back(T(changed_file), _event_type_mapping.at(file_information->Action));
+								parsed_information.emplace_back(std::string(changed_file), _event_type_mapping.at(file_information->Action));
 							}
 
 							if (file_information->NextEntryOffset == 0) {
@@ -385,7 +381,7 @@ namespace filewatch {
 
 #if __unix__
 
-		bool is_file(const T& path) const
+		bool is_file(const std::string& path) const
 		{
 			struct stat statbuf = {};
 			if (stat(path.c_str(), &statbuf) != 0)
@@ -396,7 +392,7 @@ namespace filewatch {
 			return S_ISREG(statbuf.st_mode);
 		}
 
-		FolderInfo get_directory(const T& path)
+		FolderInfo get_directory(const std::string& path)
 		{
 			const auto folder = inotify_init();
 			if (folder < 0)
@@ -407,7 +403,7 @@ namespace filewatch {
 			const auto listen_filters = _listen_filters;
 			_watching_single_file = is_file(path);
 
-			const T watch_path;
+			const std::string watch_path;
 			{
 				if (_watching_single_file)
 				{
@@ -441,26 +437,26 @@ namespace filewatch {
 				if (length > 0)
 				{
 					int i = 0;
-					std::vector<std::pair<T, Event>> parsed_information;
+					std::vector<std::pair<std::string, Event>> parsed_information;
 					while (i < length)
 					{
 						struct inotify_event* event = reinterpret_cast<struct inotify_event*>(&buffer[i]); // NOLINT
 						if (event->len)
 						{
-							const UnderpinningString changed_file(event->name);
+							const std::string changed_file(event->name);
 							if (pass_filter(changed_file))
 							{
 								if (event->mask & IN_CREATE)
 								{
-									parsed_information.emplace_back(T(changed_file), Event::added);
+									parsed_information.emplace_back(std::string(changed_file), Event::added);
 								}
 								else if (event->mask & IN_DELETE)
 								{
-									parsed_information.emplace_back(T(changed_file), Event::removed);
+									parsed_information.emplace_back(std::string(changed_file), Event::removed);
 								}
 								else if (event->mask & IN_MODIFY)
 								{
-									parsed_information.emplace_back(T(changed_file), Event::modified);
+									parsed_information.emplace_back(std::string(changed_file), Event::modified);
 								}
 							}
 						}
