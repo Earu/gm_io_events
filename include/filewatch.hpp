@@ -39,11 +39,11 @@
 
 namespace filewatch {
 	enum class Event {
-		added,
-		removed,
-		modified,
-		renamed_old,
-		renamed_new
+		CREATED,
+		DELETED,
+		CHANGED,
+		RENAMED_OLD,
+		RENAMED_NEW
 	};
 
 	/**
@@ -129,11 +129,11 @@ namespace filewatch {
 			FILE_NOTIFY_CHANGE_FILE_NAME;
 
 		const std::map<DWORD, Event> _event_type_mapping = {
-			std::pair(FILE_ACTION_ADDED, Event::added),
-			std::pair(FILE_ACTION_REMOVED, Event::removed),
-			std::pair(FILE_ACTION_MODIFIED, Event::modified),
-			std::pair(FILE_ACTION_RENAMED_OLD_NAME, Event::renamed_old),
-			std::pair(FILE_ACTION_RENAMED_NEW_NAME, Event::renamed_new)
+			std::pair(FILE_ACTION_ADDED, Event::CREATED),
+			std::pair(FILE_ACTION_REMOVED, Event::DELETED),
+			std::pair(FILE_ACTION_MODIFIED, Event::CHANGED),
+			std::pair(FILE_ACTION_RENAMED_OLD_NAME, Event::RENAMED_OLD),
+			std::pair(FILE_ACTION_RENAMED_NEW_NAME, Event::RENAMED_NEW)
 		};
 #endif // WIN32
 
@@ -220,11 +220,11 @@ namespace filewatch {
 			const std::string this_directory = "./";
 #endif // __unix__
 
-			const auto pivot = std::find_if(path.rbegin(), path.rend(), predict).base();
+			const std::string::const_iterator pivot = std::find_if(path.rbegin(), path.rend(), predict).base();
 			//if the path is something like "test.txt" there will be no directoy part, however we still need one, so insert './'
 			std::string directory;
 			{
-				const auto extracted_directory = std::string(path.begin(), pivot);
+				const std::string extracted_directory = std::string(path.begin(), pivot);
 				directory = (extracted_directory.size() > 0) ? extracted_directory : this_directory;
 			};
 
@@ -246,7 +246,7 @@ namespace filewatch {
 #ifdef _WIN32
 		HANDLE get_directory(const std::string& path)
 		{
-			auto file_info = GetFileAttributes(path.c_str());
+			DWORD file_info = GetFileAttributes(path.c_str());
 			if (file_info == INVALID_FILE_ATTRIBUTES)
 			{
 				throw std::system_error(GetLastError(), std::system_category());
@@ -297,7 +297,7 @@ namespace filewatch {
 
 			std::array<HANDLE, 2> handles{ overlapped_buffer.hEvent, _close_event };
 
-			auto async_pending = false;
+			bool async_pending = false;
 			_running.set_value();
 			do {
 				std::vector<std::pair<std::string, Event>> parsed_information;
@@ -328,7 +328,8 @@ namespace filewatch {
 						FILE_NOTIFY_INFORMATION* file_information = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(&buffer[0]);
 						do
 						{
-							std::string changed_file((const char*)file_information->FileName - 1, file_information->FileNameLength / 2);
+							const std::wstring unicode_changed_file(file_information->FileName - 1);
+							const std::string changed_file(unicode_changed_file.begin(), unicode_changed_file.end());
 							if (pass_filter(changed_file))
 							{
 								parsed_information.emplace_back(std::string(changed_file), _event_type_mapping.at(file_information->Action));
@@ -472,14 +473,14 @@ namespace filewatch {
 				lock.unlock();
 
 				for (const auto& file : callback_information) {
-					if (_callback) {
-						try
-						{
-							_callback(file.first, file.second);
-						}
-						catch (const std::exception&)
-						{
-						}
+					if (!_callback) continue;
+
+					try
+					{
+						_callback(file.first, file.second);
+					}
+					catch (const std::exception&)
+					{
 					}
 				}
 			}
