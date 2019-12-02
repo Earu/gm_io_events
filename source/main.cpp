@@ -21,27 +21,30 @@ const std::string GetGamePath(GarrysMod::Lua::ILuaBase* LUA)
 
 void HookRun(GarrysMod::Lua::ILuaBase* LUA, const char* path, const char* event_type)
 {
-	/*LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
+	/*if (path == nullptr || event_type == nullptr) {
+		Msg("Something was nullptr?");
+		return;
+	}
+
+	Msg(path);
+	Msg("\n");
+	Msg(event_type);
+	Msg("\n");*/
+
+	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
 		LUA->GetField(-1, "hook");
 			LUA->GetField(-1, "Run");
 				LUA->PushString("FileChanged");
 				LUA->PushString(path);
 				LUA->PushString(event_type);
 			LUA->PCall(3, 0, 0);
-	LUA->Pop();*/
-	Msg(path);
-	Msg("\n");
-	Msg(event_type);
-	Msg("\n");
+	LUA->Pop(2);
 }
 
 filewatch::FileWatch* watcher = nullptr;
 GMOD_MODULE_OPEN()
 {
-	std::string game_dir = GetGamePath(LUA);
-	HookRun(LUA, game_dir.c_str(), "CREATED");
-
-	watcher = new filewatch::FileWatch(game_dir, [LUA](const std::string path, const filewatch::Event event_type) {
+	watcher = new filewatch::FileWatch(GetGamePath(LUA), [LUA](const std::string path, const filewatch::Event event_type) {
 		const char* type;
 		switch (event_type) {
 			case filewatch::Event::CREATED:
