@@ -35,9 +35,7 @@
 #include <system_error>
 #include <string>
 #include <algorithm>
-#include <type_traits>
 #include <future>
-#include <regex>
 
 namespace filewatch {
 	enum class Event {
@@ -60,22 +58,13 @@ namespace filewatch {
 	{
 	public:
 
-		FileWatch(std::string path, std::regex pattern, std::function<void(const std::string & file, const Event event_type)> callback) :
+		FileWatch(std::string path, std::function<void(const std::string& file, const Event event_type)> callback) :
 			_path(path),
-			_pattern(pattern),
 			_callback(callback),
 			_directory(get_directory(path))
 		{
 			init();
 		}
-
-#if defined _WIN32 && (defined UNICODE || defined _UNICODE)
-		FileWatch(std::string path, std::function<void(const std::string & file, const Event event_type)> callback) :
-			FileWatch(path, std::regex(L".*"), callback) {}
-#else // _WIN32 && (UNICODE || _UNICODE)
-		FileWatch(std::string path, std::function<void(const std::string & file, const Event event_type)> callback) :
-			FileWatch(path, std::regex(".*"), callback) {}
-#endif
 
 		~FileWatch() {
 			destroy();
@@ -107,8 +96,6 @@ namespace filewatch {
 			std::string filename;
 		};
 		std::string _path;
-
-		std::regex _pattern;
 
 		static constexpr std::size_t _buffer_size = 1024 * 256;
 
@@ -156,7 +143,7 @@ namespace filewatch {
 			int watch;
 		};
 
-		FolderInfo  _directory;
+		FolderInfo _directory;
 
 		const std::uint32_t _listen_filters = IN_MODIFY | IN_CREATE | IN_DELETE;
 
@@ -253,7 +240,7 @@ namespace filewatch {
 				return extracted_filename == _filename;
 			}
 
-			return std::regex_match(file_path, _pattern);
+			return true;
 		}
 
 #ifdef _WIN32
