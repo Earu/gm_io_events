@@ -1,6 +1,8 @@
 #ifndef FILEWATCHER_H
 #define FILEWATCHER_H
 
+//#include <dbg.h>
+
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -46,14 +48,6 @@ namespace filewatch {
 		RENAMED_NEW
 	};
 
-	/**
-	* \class FileWatch
-	*
-	* \brief Watches a folder or file, and will notify of changes via function callback.
-	*
-	* \author Thomas Monkman
-	*
-	*/
 	class FileWatch
 	{
 	public:
@@ -84,7 +78,7 @@ namespace filewatch {
 			return *this;
 		}
 
-		// Const memeber varibles don't let me implent moves nicely, if moves are really wanted std::unique_ptr should be used and move that.
+		// Const member variables don't let me implent moves nicely, if moves are really wanted std::unique_ptr should be used and move that.
 		FileWatch(FileWatch&&) = delete;
 		FileWatch& operator=(FileWatch&&) & = delete;
 
@@ -222,11 +216,8 @@ namespace filewatch {
 
 			const std::string::const_iterator pivot = std::find_if(path.rbegin(), path.rend(), predict).base();
 			//if the path is something like "test.txt" there will be no directoy part, however we still need one, so insert './'
-			std::string directory;
-			{
-				const std::string extracted_directory = std::string(path.begin(), pivot);
-				directory = (extracted_directory.size() > 0) ? extracted_directory : this_directory;
-			};
+			const std::string extracted_directory = std::string(path.begin(), pivot);
+			std::string directory = (extracted_directory.size() > 0) ? extracted_directory : this_directory;
 
 			const std::string filename = std::string(pivot, path.end());
 			return PathParts(directory, filename);
@@ -248,23 +239,19 @@ namespace filewatch {
 		{
 			DWORD file_info = GetFileAttributes(path.c_str());
 			if (file_info == INVALID_FILE_ATTRIBUTES)
-			{
 				throw std::system_error(GetLastError(), std::system_category());
-			}
 
 			std::string watch_path;
+			_watching_single_file = (file_info & FILE_ATTRIBUTE_DIRECTORY) == false;
+			if (_watching_single_file)
 			{
-				_watching_single_file = (file_info & FILE_ATTRIBUTE_DIRECTORY) == false;
-				if (_watching_single_file)
-				{
-					const auto parsed_path = split_directory_and_file(path);
-					_filename = parsed_path.filename;
-					watch_path = parsed_path.directory;
-				}
-				else
-				{
-					watch_path = path;
-				}
+				const auto parsed_path = split_directory_and_file(path);
+				_filename = parsed_path.filename;
+				watch_path = parsed_path.directory;
+			}
+			else
+			{
+				watch_path = path;
 			}
 
 			HANDLE directory = CreateFile(
@@ -277,11 +264,22 @@ namespace filewatch {
 				nullptr);                                               // file with attributes to copy
 
 			if (directory == INVALID_HANDLE_VALUE)
-			{
 				throw std::system_error(GetLastError(), std::system_category());
-			}
 
 			return directory;
+		}
+
+		std::string unicode_string_to_string(const std::wstring& s)
+		{
+			int len;
+			int slength = (int)s.length() + 1;
+			len = WideCharToMultiByte(CP_ACP, 0, s.c_str(), slength, 0, 0, 0, 0);
+			char* buf = new char[len];
+			WideCharToMultiByte(CP_ACP, 0, s.c_str(), slength, buf, len, 0, 0);
+			std::string r(buf);
+			delete[] buf;
+
+			return r;
 		}
 
 		void monitor_directory()
@@ -291,9 +289,8 @@ namespace filewatch {
 			OVERLAPPED overlapped_buffer{ 0 };
 
 			overlapped_buffer.hEvent = CreateEvent(nullptr, true, false, nullptr);
-			if (!overlapped_buffer.hEvent) {
+			if (!overlapped_buffer.hEvent) 
 				std::cerr << "Error creating monitor event" << std::endl;
-			}
 
 			std::array<HANDLE, 2> handles{ overlapped_buffer.hEvent, _close_event };
 
@@ -315,29 +312,23 @@ namespace filewatch {
 				{
 					case WAIT_OBJECT_0:
 					{
-						if (!GetOverlappedResult(_directory, &overlapped_buffer, &bytes_returned, true)) {
+						if (!GetOverlappedResult(_directory, &overlapped_buffer, &bytes_returned, true)) 
 							throw std::system_error(GetLastError(), std::system_category());
-						}
 
 						async_pending = false;
 
-						if (bytes_returned == 0) {
-							break;
-						}
+						if (bytes_returned == 0) break;
 
 						FILE_NOTIFY_INFORMATION* file_information = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(&buffer[0]);
 						do
 						{
-							const std::wstring unicode_changed_file(file_information->FileName - 1);
-							const std::string changed_file(unicode_changed_file.begin(), unicode_changed_file.end());
-							if (pass_filter(changed_file))
-							{
-								parsed_information.emplace_back(std::string(changed_file), _event_type_mapping.at(file_information->Action));
-							}
+							const std::string changed_file = unicode_string_to_string(std::wstring(reinterpret_cast<wchar_t*>(file_information->FileName - 1)));
+							//Msg(changed_file.c_str()); Msg("\n");
 
-							if (file_information->NextEntryOffset == 0) {
-								break;
-							}
+							if (pass_filter(changed_file))
+								parsed_information.emplace_back(changed_file, _event_type_mapping.at(file_information->Action));
+
+							if (file_information->NextEntryOffset == 0) break;
 
 							file_information = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(reinterpret_cast<BYTE*>(file_information) + file_information->NextEntryOffset);
 						} while (true);
