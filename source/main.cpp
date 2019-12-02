@@ -28,15 +28,15 @@ void HookRun(GarrysMod::Lua::ILuaBase* LUA, const char* path, const char* event_
 				LUA->PushString(path);
 				LUA->PushString(event_type);
 			LUA->Call(3, 0);
-	LUA->Pop();
+	LUA->Pop(2);
 }
 
-filewatch::FileWatch<std::string> *watcher;
+filewatch::FileWatch* watcher = nullptr;
 GMOD_MODULE_OPEN()
 {
 	std::string game_dir = GetGamePath(LUA);
 
-	watcher = new filewatch::FileWatch<std::string>(game_dir, std::regex(".*"), [LUA](const std::string& path, const filewatch::Event event_type) {
+	watcher = new filewatch::FileWatch(game_dir, std::regex(".*"), [LUA](const std::string& path, const filewatch::Event event_type) {
 		const char* type;
 		switch (event_type) {
 			case filewatch::Event::added:
@@ -67,7 +67,9 @@ GMOD_MODULE_OPEN()
 
 GMOD_MODULE_CLOSE()
 {
-	watcher->~FileWatch();
+	if (watcher != nullptr) {
+		watcher->~FileWatch();
+	}
 
 	return 0;
 }
