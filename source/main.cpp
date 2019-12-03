@@ -3,8 +3,9 @@
 #include <eiface.h>
 #include <dbg.h>
 #include <filewatch.hpp>
+#include <queue>
 
-const std::string GetGamePath(GarrysMod::Lua::ILuaBase* LUA) 
+const std::string get_game_path(GarrysMod::Lua::ILuaBase* LUA) 
 {
 	SourceSDK::FactoryLoader engine_loader("engine");
 	IVEngineServer* engine_server = engine_loader.GetInterface<IVEngineServer>(INTERFACEVERSION_VENGINESERVER);
@@ -19,10 +20,11 @@ const std::string GetGamePath(GarrysMod::Lua::ILuaBase* LUA)
 	return game_dir;
 }
 
-void HookRun(GarrysMod::Lua::ILuaBase* LUA, const char* path, const char* event_type)
+void hook_run(lua_State* state, const char* path, const char* event_type)
 {
 	if (path == nullptr || event_type == nullptr) return;
 
+	GarrysMod::Lua::ILuaBase* LUA = state->luabase;
 	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
 		LUA->GetField(-1, "hook");
 			LUA->GetField(-1, "Run");
@@ -33,45 +35,76 @@ void HookRun(GarrysMod::Lua::ILuaBase* LUA, const char* path, const char* event_
 	LUA->Pop(2);
 }
 
+typedef std::pair<std::string, filewatch::Event> FileChange;
+
 filewatch::FileWatch* watcher = nullptr;
-GMOD_MODULE_OPEN()
+std::queue<FileChange> file_changes = {};
+
+int spew_file_events(lua_State* state)
 {
-	std::string base_dir = GetGamePath(LUA);
-	watcher = new filewatch::FileWatch(base_dir, [LUA, base_dir](std::string path, const filewatch::Event event_type) {
-		const char* type;
-		switch (event_type) {
+	while (!file_changes.empty())
+	{
+		FileChange change = file_changes.front();
+		char* event_type;
+		switch (change.second)
+		{
 			case filewatch::Event::CREATED:
-				type = "CREATED";
-				break;
-			case filewatch::Event::CHANGED:
-				type = "CHANGED";
+				event_type = "CREATED";
 				break;
 			case filewatch::Event::DELETED:
-				type = "DELETED";
+				event_type = "DELETED";
+				break;
+			case filewatch::Event::CHANGED:
+				event_type = "MODIFIED";
 				break;
 			case filewatch::Event::RENAMED_NEW:
-				type = "RENAMED_NEW";
+				event_type = "RENAMED_NEW";
 				break;
 			case filewatch::Event::RENAMED_OLD:
-				type = "RENAMED_OLD";
+				event_type = "RENAMED_OLD";
 				break;
 			default:
-				type = "UNKNOWN";
+				event_type = "UNKNOWN";
 				break;
 		}
-	
+
+		hook_run(state, change.first.c_str(), event_type);
+		file_changes.pop();
+	}
+
+	return 0;
+}
+
+void create_dispatcher(GarrysMod::Lua::ILuaBase* LUA)
+{
+	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
+		LUA->GetField(-1, "timer");
+			LUA->GetField(-1, "Create");
+				LUA->PushString("IOSpewFileEvents");
+				LUA->PushNumber(0.250);
+				LUA->PushNumber(0);
+				LUA->PushCFunction(spew_file_events);
+				LUA->PCall(4, 0, 0);
+	LUA->Pop(2);
+}
+
+GMOD_MODULE_OPEN()
+{
+	std::string base_dir = get_game_path(LUA);
+	watcher = new filewatch::FileWatch(base_dir, [LUA, base_dir](std::string path, const filewatch::Event event_type) {
 		std::replace(path.begin(), path.end(), '\\', '/');
-		HookRun(LUA, path.c_str(), type);
+		file_changes.push(FileChange(path, event_type));
 	});
+
+	create_dispatcher(LUA);
 
 	return 0;
 }
 
 GMOD_MODULE_CLOSE()
 {
-	if (watcher != nullptr) {
+	if (watcher != nullptr) 
 		watcher->~FileWatch();
-	}
 
 	return 0;
 }
