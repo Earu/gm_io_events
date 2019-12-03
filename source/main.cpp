@@ -55,7 +55,7 @@ int spew_file_events(lua_State* state)
 				event_type = "DELETED";
 				break;
 			case filewatch::Event::CHANGED:
-				event_type = "MODIFIED";
+				event_type = "CHANGED";
 				break;
 			case filewatch::Event::RENAMED_NEW:
 				event_type = "RENAMED_NEW";
@@ -90,8 +90,7 @@ void create_dispatcher(GarrysMod::Lua::ILuaBase* LUA)
 
 GMOD_MODULE_OPEN()
 {
-	std::string base_dir = get_game_path(LUA);
-	watcher = new filewatch::FileWatch(base_dir, [LUA, base_dir](std::string path, const filewatch::Event event_type) {
+	watcher = new filewatch::FileWatch(get_game_path(LUA), [](std::string path, const filewatch::Event event_type) {
 		std::replace(path.begin(), path.end(), '\\', '/');
 		file_changes.push(FileChange(path, event_type));
 	});
