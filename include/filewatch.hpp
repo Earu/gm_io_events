@@ -321,13 +321,12 @@ namespace filewatch {
 						FILE_NOTIFY_INFORMATION* file_information = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(&buffer[0]);
 						do
 						{
-							size_t filename_len = file_information->FileNameLength;
-							wchar_t* filename = new wchar_t[filename_len];
-							wcsncpy(filename, file_information->FileName, filename_len);
-							filename[filename_len] = '\0'; // make sure to null terminate
+							std::wstring temp_changed_file(file_information->FileName, file_information->FileNameLength / 2);
+							std::string changed_file(temp_changed_file.size(), static_cast<typename std::string::value_type>('\0'));
+							for (size_t k = 0; k < changed_file.size(); ++k)
+								changed_file[k] = static_cast<typename std::string::value_type>(temp_changed_file[k]);
 
-							const std::string changed_file = unicode_to_string(std::wstring(filename));
-							if (pass_filter(changed_file)) 
+							if (pass_filter(changed_file))
 								parsed_information.emplace_back(std::string(changed_file), _event_type_mapping.at(file_information->Action));
 
 							if (file_information->NextEntryOffset == 0) break;
@@ -462,7 +461,6 @@ namespace filewatch {
 
 				std::vector<std::pair<std::string, Event>> callback_information = {};
 				std::swap(callback_information, _callback_information);
-				_callback_information.clear();
 				lock.unlock();
 
 				for (const auto& file : callback_information)
@@ -477,8 +475,6 @@ namespace filewatch {
 					{
 					}
 				}
-
-				callback_information.clear();
 			}
 		}
 	};
