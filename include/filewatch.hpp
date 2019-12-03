@@ -1,8 +1,6 @@
 #ifndef FILEWATCHER_H
 #define FILEWATCHER_H
 
-//#include <dbg.h>
-
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -60,7 +58,8 @@ namespace filewatch {
 			init();
 		}
 
-		~FileWatch() {
+		~FileWatch() 
+		{
 			destroy();
 		}
 
@@ -68,7 +67,7 @@ namespace filewatch {
 
 		FileWatch& operator=(const FileWatch& other)
 		{
-			if (this == &other) { return *this; }
+			if (this == &other) return *this;
 
 			destroy();
 			_path = other._path;
@@ -148,32 +147,37 @@ namespace filewatch {
 		{
 #ifdef _WIN32
 			_close_event = CreateEvent(nullptr, true, false, nullptr);
-			if (!_close_event) {
+			if (!_close_event) 
 				throw std::system_error(GetLastError(), std::system_category());
-			}
 #endif // WIN32
 			_callback_thread = std::move(std::thread([this]() {
-				try {
+				try 
+				{
 					callback_thread();
 				}
-				catch (...) {
-					try {
+				catch (...) 
+				{
+					try 
+					{
 						_running.set_exception(std::current_exception());
 					}
 					catch (...) {} // set_exception() may throw too
 				}
-				}));
+			}));
+
 			_watch_thread = std::move(std::thread([this]() {
-				try {
+				try 
+				{
 					monitor_directory();
 				}
-				catch (...) {
+				catch (...) 
+				{
 					try {
 						_running.set_exception(std::current_exception());
 					}
 					catch (...) {} // set_exception() may throw too
 				}
-				}));
+			}));
 
 			std::future<void> future = _running.get_future();
 			future.get(); //block until the monitor_directory is up and running
@@ -225,7 +229,8 @@ namespace filewatch {
 
 		bool pass_filter(const std::string& file_path)
 		{
-			if (_watching_single_file) {
+			if (_watching_single_file) 
+			{
 				const std::string extracted_filename = { split_directory_and_file(file_path).filename };
 				//if we are watching a single file, only that file should trigger action
 				return extracted_filename == _filename;
@@ -269,17 +274,16 @@ namespace filewatch {
 			return directory;
 		}
 
-		std::string unicode_string_to_string(const std::wstring& s)
+		std::string unicode_to_string(const std::wstring& unicode_string)
 		{
-			int len;
-			int slength = (int)s.length() + 1;
-			len = WideCharToMultiByte(CP_ACP, 0, s.c_str(), slength, 0, 0, 0, 0);
-			char* buf = new char[len];
-			WideCharToMultiByte(CP_ACP, 0, s.c_str(), slength, buf, len, 0, 0);
-			std::string r(buf);
-			delete[] buf;
+			int unicode_len = (int)unicode_string.length() + 1;
+			int len = WideCharToMultiByte(CP_ACP, 0, unicode_string.c_str(), unicode_len, 0, 0, 0, 0);
+			char* buffer = new char[len];
+			WideCharToMultiByte(CP_ACP, 0, unicode_string.c_str(), unicode_len, buffer, len, 0, 0);
+			std::string translated_string(buffer);
+			delete[] buffer;
 
-			return r;
+			return translated_string;
 		}
 
 		void monitor_directory()
@@ -296,15 +300,10 @@ namespace filewatch {
 
 			bool async_pending = false;
 			_running.set_value();
-			do {
-				std::vector<std::pair<std::string, Event>> parsed_information;
-				ReadDirectoryChangesW(
-					_directory,
-					buffer.data(), buffer.size(),
-					true,
-					_listen_filters,
-					&bytes_returned,
-					&overlapped_buffer, nullptr);
+			do 
+			{
+				std::vector<std::pair<std::string, Event>> parsed_information = {};
+				ReadDirectoryChangesW(_directory, buffer.data(), buffer.size(), true, _listen_filters, &bytes_returned, &overlapped_buffer, nullptr);
 
 				async_pending = true;
 
@@ -322,11 +321,14 @@ namespace filewatch {
 						FILE_NOTIFY_INFORMATION* file_information = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(&buffer[0]);
 						do
 						{
-							const std::string changed_file = unicode_string_to_string(std::wstring(reinterpret_cast<wchar_t*>(file_information->FileName - 1)));
-							//Msg(changed_file.c_str()); Msg("\n");
+							size_t filename_len = file_information->FileNameLength;
+							wchar_t* filename = new wchar_t[filename_len];
+							wcsncpy(filename, file_information->FileName, filename_len);
+							filename[filename_len] = '\0'; // make sure to null terminate
 
-							if (pass_filter(changed_file))
-								parsed_information.emplace_back(changed_file, _event_type_mapping.at(file_information->Action));
+							const std::string changed_file = unicode_to_string(std::wstring(filename));
+							if (pass_filter(changed_file)) 
+								parsed_information.emplace_back(std::string(changed_file), _event_type_mapping.at(file_information->Action));
 
 							if (file_information->NextEntryOffset == 0) break;
 
@@ -342,10 +344,8 @@ namespace filewatch {
 				}
 
 				//dispatch callbacks
-				{
-					std::lock_guard<std::mutex> lock(_callback_mutex);
-					_callback_information.insert(_callback_information.end(), parsed_information.begin(), parsed_information.end());
-				}
+				std::lock_guard<std::mutex> lock(_callback_mutex);
+				_callback_information.insert(_callback_information.end(), parsed_information.begin(), parsed_information.end());
 				_cv.notify_all();
 			} while (_destroy == false);
 
@@ -454,16 +454,19 @@ namespace filewatch {
 
 		void callback_thread()
 		{
-			while (_destroy == false) {
+			while (_destroy == false) 
+			{
 				std::unique_lock<std::mutex> lock(_callback_mutex);
-				if (_callback_information.empty() && _destroy == false) {
+				if (_callback_information.empty() && _destroy == false) 
 					_cv.wait(lock, [this] { return _callback_information.size() > 0 || _destroy; });
-				}
-				decltype(_callback_information) callback_information = {};
+
+				std::vector<std::pair<std::string, Event>> callback_information = {};
 				std::swap(callback_information, _callback_information);
+				_callback_information.clear();
 				lock.unlock();
 
-				for (const auto& file : callback_information) {
+				for (const auto& file : callback_information)
+				{
 					if (!_callback) continue;
 
 					try
@@ -474,6 +477,8 @@ namespace filewatch {
 					{
 					}
 				}
+
+				callback_information.clear();
 			}
 		}
 	};
