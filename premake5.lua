@@ -9,6 +9,8 @@ local gmcommon = assert(_OPTIONS.gmcommon or os.getenv("GARRYSMOD_COMMON"),
 include(path.join(gmcommon, "generator.v2.lua"))
 
 CreateWorkspace({name = "io_events"})
+	includedirs({"include"})
+
 	CreateProject({serverside = true})
 		IncludeLuaShared()
 		IncludeSDKCommon()

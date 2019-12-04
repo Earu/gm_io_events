@@ -1,2 +1,3 @@
 projects/windows/vs2019/.vs
 projects/windows/vs2019/x86
+.vscode/*
