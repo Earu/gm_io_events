@@ -4,6 +4,8 @@ Dead simple Garry's Mod module that tracks file changes and fire hooks on the lu
 Note: This is still WIP under Linux systems.
 
 ### Usage
+Get one the pre-compiled binaries or build it yourself, then put the binary under `garrysmod/lua/bin`.
+
 ```lua
 require('io_events')
 
