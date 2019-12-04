@@ -5,12 +5,13 @@
 #include <filewatch.hpp>
 #include <queue>
 #include <mutex>
+#include <cstring>
 
 typedef std::pair<std::string, filewatch::Event> FileChange;
 
 filewatch::FileWatch* watcher = nullptr;
 std::mutex changes_mtx;
-std::queue<FileChange> file_changes = {};
+std::queue<FileChange> file_changes{};
 
 std::string get_game_path(GarrysMod::Lua::ILuaBase* LUA) 
 {
@@ -50,7 +51,7 @@ int spew_file_events(lua_State* state)
 		FileChange change = file_changes.front();
 		file_changes.pop();
 
-		char* event_type;
+		const char* event_type;
 		switch (change.second)
 		{
 			case filewatch::Event::CREATED:
