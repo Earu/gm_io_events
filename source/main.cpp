@@ -4,8 +4,52 @@
 #include <dbg.h>
 #include <filewatch.hpp>
 #include <queue>
+#include <mutex>
 
-const std::string get_game_path(GarrysMod::Lua::ILuaBase* LUA) 
+typedef std::pair<std::string, filewatch::Event> FileChange;
+
+class FileChangeQueue
+{
+public:
+	~FileChangeQueue()
+	{
+		delete& _changes_mtx;
+		delete& _file_changes;
+	}
+
+	void push_safe(FileChange change)
+	{
+		_changes_mtx.lock();
+		_file_changes.push(change);
+		_changes_mtx.unlock();
+	}
+
+	FileChange pop_safe()
+	{
+		_changes_mtx.lock();
+		FileChange change = _file_changes.front();
+		_file_changes.pop();
+
+		return change;
+	}
+
+	bool is_empty_safe()
+	{
+		_changes_mtx.lock();
+		bool is_empty = _file_changes.empty();
+		_changes_mtx.unlock();
+
+		return is_empty;
+	}
+private:
+	std::mutex _changes_mtx;
+	std::queue<FileChange> _file_changes;
+};
+
+filewatch::FileWatch* watcher = nullptr;
+FileChangeQueue file_changes = {};
+
+std::string get_game_path(GarrysMod::Lua::ILuaBase* LUA) 
 {
 	SourceSDK::FactoryLoader engine_loader("engine");
 	IVEngineServer* engine_server = engine_loader.GetInterface<IVEngineServer>(INTERFACEVERSION_VENGINESERVER);
@@ -35,16 +79,11 @@ void hook_run(lua_State* state, const char* path, const char* event_type)
 	LUA->Pop(2);
 }
 
-typedef std::pair<std::string, filewatch::Event> FileChange;
-
-filewatch::FileWatch* watcher = nullptr;
-std::queue<FileChange> file_changes = {};
-
 int spew_file_events(lua_State* state)
 {
-	while (!file_changes.empty())
+	while (!file_changes.is_empty_safe())
 	{
-		FileChange change = file_changes.front();
+		FileChange change = file_changes.pop_safe();
 		char* event_type;
 		switch (change.second)
 		{
@@ -69,7 +108,6 @@ int spew_file_events(lua_State* state)
 		}
 
 		hook_run(state, change.first.c_str(), event_type);
-		file_changes.pop();
 	}
 
 	return 0;
@@ -92,7 +130,7 @@ GMOD_MODULE_OPEN()
 {
 	watcher = new filewatch::FileWatch(get_game_path(LUA), [](std::string path, const filewatch::Event event_type) {
 		std::replace(path.begin(), path.end(), '\\', '/');
-		file_changes.push(FileChange(path, event_type));
+		file_changes.push_safe(FileChange(path, event_type));
 	});
 
 	create_dispatcher(LUA);
@@ -104,6 +142,8 @@ GMOD_MODULE_CLOSE()
 {
 	if (watcher != nullptr) 
 		watcher->~FileWatch();
+
+	file_changes.~FileChangeQueue();
 
 	return 0;
 }
