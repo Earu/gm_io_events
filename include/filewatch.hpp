@@ -37,6 +37,10 @@
 #include <algorithm>
 #include <future>
 
+#if __unix__
+using namespace std;
+#endif
+
 namespace filewatch {
 	enum class Event {
 		CREATED,
@@ -96,7 +100,8 @@ namespace filewatch {
 		bool _watching_single_file = false;
 		std::string _filename;
 
-		std::atomic<bool> _destroy = false;
+		std::atomic_bool _destroy(false);
+
 		std::function<void(const std::string& file, const Event event_type)> _callback;
 
 		std::thread _watch_thread;
@@ -185,7 +190,7 @@ namespace filewatch {
 
 		void destroy()
 		{
-			_destroy = true;
+			_destroy.store(true);
 			_running = std::promise<void>();
 #ifdef _WIN32
 			SetEvent(_close_event);
@@ -363,29 +368,25 @@ namespace filewatch {
 		{
 			struct stat statbuf = {};
 			if (stat(path.c_str(), &statbuf) != 0)
-			{
 				throw std::system_error(errno, std::system_category());
-			}
 
 			return S_ISREG(statbuf.st_mode);
 		}
 
 		FolderInfo get_directory(const std::string& path)
 		{
-			const auto folder = inotify_init();
+			const int folder = inotify_init();
 			if (folder < 0)
-			{
 				throw std::system_error(errno, std::system_category());
-			}
 
-			const auto listen_filters = _listen_filters;
+			const uint32_t listen_filters = _listen_filters;
 			_watching_single_file = is_file(path);
 
 			const std::string watch_path;
 			{
 				if (_watching_single_file)
 				{
-					const auto parsed_path = split_directory_and_file(path);
+					const filewatch::FileWatch::PathParts parsed_path = split_directory_and_file(path);
 					_filename = parsed_path.filename;
 					watch_path = parsed_path.directory;
 				}
@@ -397,9 +398,7 @@ namespace filewatch {
 
 			const auto watch = inotify_add_watch(folder, watch_path.c_str(), IN_MODIFY | IN_CREATE | IN_DELETE);
 			if (watch < 0)
-			{
 				throw std::system_error(errno, std::system_category());
-			}
 
 			return { folder, watch };
 		}
@@ -409,7 +408,7 @@ namespace filewatch {
 			std::vector<char> buffer(_buffer_size);
 
 			_running.set_value();
-			while (_destroy == false)
+			while (_destroy.load() == false)
 			{
 				const auto length = read(_directory.folder, static_cast<void*>(buffer.data()), buffer.size());
 				if (length > 0)
@@ -425,26 +424,19 @@ namespace filewatch {
 							if (pass_filter(changed_file))
 							{
 								if (event->mask & IN_CREATE)
-								{
-									parsed_information.emplace_back(std::string(changed_file), Event::added);
-								}
+									parsed_information.emplace_back(std::string(changed_file), Event::CREATED);
 								else if (event->mask & IN_DELETE)
-								{
-									parsed_information.emplace_back(std::string(changed_file), Event::removed);
-								}
+									parsed_information.emplace_back(std::string(changed_file), Event::DELETED);
 								else if (event->mask & IN_MODIFY)
-								{
-									parsed_information.emplace_back(std::string(changed_file), Event::modified);
-								}
+									parsed_information.emplace_back(std::string(changed_file), Event::CHANGED);
 							}
 						}
 						i += event_size + event->len;
 					}
+
 					//dispatch callbacks
-					{
-						std::lock_guard<std::mutex> lock(_callback_mutex);
-						_callback_information.insert(_callback_information.end(), parsed_information.begin(), parsed_information.end());
-					}
+					std::lock_guard<std::mutex> lock(_callback_mutex);
+					_callback_information.insert(_callback_information.end(), parsed_information.begin(), parsed_information.end());
 					_cv.notify_all();
 				}
 			}
@@ -453,7 +445,7 @@ namespace filewatch {
 
 		void callback_thread()
 		{
-			while (_destroy == false) 
+			while (_destroy.load() == false) 
 			{
 				std::unique_lock<std::mutex> lock(_callback_mutex);
 				if (_callback_information.empty() && _destroy == false) 
