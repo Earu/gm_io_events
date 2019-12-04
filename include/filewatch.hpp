@@ -37,10 +37,6 @@
 #include <algorithm>
 #include <future>
 
-#if __unix__
-using namespace std;
-#endif
-
 namespace filewatch {
 	enum class Event {
 		CREATED,
@@ -100,7 +96,7 @@ namespace filewatch {
 		bool _watching_single_file = false;
 		std::string _filename;
 
-		std::atomic_bool _destroy(false);
+		std::atomic_bool _destroy = false;
 
 		std::function<void(const std::string& file, const Event event_type)> _callback;
 
@@ -190,7 +186,7 @@ namespace filewatch {
 
 		void destroy()
 		{
-			_destroy.store(true);
+			_destroy = true;
 			_running = std::promise<void>();
 #ifdef _WIN32
 			SetEvent(_close_event);
@@ -408,7 +404,7 @@ namespace filewatch {
 			std::vector<char> buffer(_buffer_size);
 
 			_running.set_value();
-			while (_destroy.load() == false)
+			while (_destroy == false)
 			{
 				const auto length = read(_directory.folder, static_cast<void*>(buffer.data()), buffer.size());
 				if (length > 0)
@@ -445,7 +441,7 @@ namespace filewatch {
 
 		void callback_thread()
 		{
-			while (_destroy.load() == false) 
+			while (_destroy == false) 
 			{
 				std::unique_lock<std::mutex> lock(_callback_mutex);
 				if (_callback_information.empty() && _destroy == false) 
