@@ -84,7 +84,7 @@ namespace filewatch {
 	private:
 		struct PathParts
 		{
-			PathParts(std::string directory, std::string filename) : directory(directory), filename(filename) {}
+			PathParts(std::string _directory, std::string _filename) : directory(_directory), filename(_filename) {}
 			std::string directory;
 			std::string filename;
 		};
@@ -96,7 +96,7 @@ namespace filewatch {
 		bool _watching_single_file = false;
 		std::string _filename;
 
-		std::atomic_bool _destroy = false;
+		std::atomic_bool _destroy{false};
 
 		std::function<void(const std::string& file, const Event event_type)> _callback;
 
@@ -375,10 +375,9 @@ namespace filewatch {
 			if (folder < 0)
 				throw std::system_error(errno, std::system_category());
 
-			const uint32_t listen_filters = _listen_filters;
 			_watching_single_file = is_file(path);
 
-			const std::string watch_path;
+			std::string watch_path;
 			{
 				if (_watching_single_file)
 				{
