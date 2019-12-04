@@ -1,7 +1,7 @@
 # io_events
 Dead simple Garry's Mod module that tracks file changes and fire hooks on the lua side. Works on both Linux and Windows.
 
-Note: This is still WIP.
+Note: This is still WIP under Linux systems.
 
 ### Usage
 ```lua
