@@ -94,6 +94,16 @@ void create_dispatcher(GarrysMod::Lua::ILuaBase* LUA)
 	LUA->Pop(2);
 }
 
+void destroy_dispatcher(GarrysMod::Lua::ILuaBase* LUA)
+{
+	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
+		LUA->GetField(-1, "timer");
+			LUA->GetField(-1, "Destroy");
+				LUA->PushString("IOSpewFileEvents");
+			LUA->PCall(1, 0, 0);
+	LUA->Pop(2);
+}
+
 GMOD_MODULE_OPEN()
 {
 	watcher = new filewatch::FileWatch(get_game_path(LUA), [](std::string path, const filewatch::Event event_type) {
@@ -111,11 +121,13 @@ GMOD_MODULE_OPEN()
 
 GMOD_MODULE_CLOSE()
 {
+	destroy_dispatcher(LUA);
+
 	if (watcher != nullptr) 
 		watcher->~FileWatch();
 
-	delete& file_changes;
-	delete& changes_mtx;
+	file_changes.~queue();
+	changes_mtx.~mutex();
 
 	return 0;
 }
