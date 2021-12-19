@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseWithSymbols|x64">
       <Configuration>ReleaseWithSymbols</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseWithSymbols|Win32">
       <Configuration>ReleaseWithSymbols</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
@@ -33,6 +33,18 @@
     <RootNamespace>gmcl_io_events</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -46,18 +58,6 @@
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -74,16 +74,16 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -93,29 +93,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>x86_64\Release\</OutDir>
-    <IntDir>x86_64\Release\intermediate\gmcl_io_events\</IntDir>
-    <TargetName>gmcl_io_events_win64</TargetName>
-    <TargetExt>.dll</TargetExt>
-    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>x86\Release\</OutDir>
-    <IntDir>x86\Release\intermediate\gmcl_io_events\</IntDir>
-    <TargetName>gmcl_io_events_win32</TargetName>
-    <TargetExt>.dll</TargetExt>
-    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>x86_64\ReleaseWithSymbols\</OutDir>
     <IntDir>x86_64\ReleaseWithSymbols\intermediate\gmcl_io_events\</IntDir>
     <TargetName>gmcl_io_events_win64</TargetName>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+    <IncludePath>D:\garrysmod_common\include;D:\garrysmod_common\helpers\include;D:\garrysmod_common\sourcesdk-minimal\common;D:\garrysmod_common\sourcesdk-minimal\game\shared;D:\garrysmod_common\sourcesdk-minimal\public;D:\garrysmod_common\sourcesdk-minimal\game\client;D:\garrysmod_common\sourcesdk-minimal\public\tier0;D:\garrysmod_common\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -123,7 +107,23 @@
     <IntDir>x86\ReleaseWithSymbols\intermediate\gmcl_io_events\</IntDir>
     <TargetName>gmcl_io_events_win32</TargetName>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+    <IncludePath>D:\garrysmod_common\include;D:\garrysmod_common\helpers\include;D:\garrysmod_common\sourcesdk-minimal\common;D:\garrysmod_common\sourcesdk-minimal\game\shared;D:\garrysmod_common\sourcesdk-minimal\public;D:\garrysmod_common\sourcesdk-minimal\game\client;D:\garrysmod_common\sourcesdk-minimal\public\tier0;D:\garrysmod_common\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>x86_64\Release\</OutDir>
+    <IntDir>x86_64\Release\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win64</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\garrysmod_common\helpers\include;D:\garrysmod_common\sourcesdk-minimal\common;D:\garrysmod_common\sourcesdk-minimal\game\shared;D:\garrysmod_common\sourcesdk-minimal\public;D:\garrysmod_common\sourcesdk-minimal\game\client;D:\garrysmod_common\sourcesdk-minimal\public\tier0;D:\garrysmod_common\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>x86\Release\</OutDir>
+    <IntDir>x86\Release\intermediate\gmcl_io_events\</IntDir>
+    <TargetName>gmcl_io_events_win32</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\garrysmod_common\include;D:\garrysmod_common\helpers\include;D:\garrysmod_common\sourcesdk-minimal\common;D:\garrysmod_common\sourcesdk-minimal\game\shared;D:\garrysmod_common\sourcesdk-minimal\public;D:\garrysmod_common\sourcesdk-minimal\game\client;D:\garrysmod_common\sourcesdk-minimal\public\tier0;D:\garrysmod_common\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -131,7 +131,7 @@
     <IntDir>x86_64\Debug\intermediate\gmcl_io_events\</IntDir>
     <TargetName>gmcl_io_events_win64</TargetName>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+    <IncludePath>D:\garrysmod_common\include;D:\garrysmod_common\helpers\include;D:\garrysmod_common\sourcesdk-minimal\common;D:\garrysmod_common\sourcesdk-minimal\game\shared;D:\garrysmod_common\sourcesdk-minimal\public;D:\garrysmod_common\sourcesdk-minimal\game\client;D:\garrysmod_common\sourcesdk-minimal\public\tier0;D:\garrysmod_common\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -139,71 +139,15 @@
     <IntDir>x86\Debug\intermediate\gmcl_io_events\</IntDir>
     <TargetName>gmcl_io_events_win32</TargetName>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>D:\garrysmod_common\include;D:\sourcesdk-minimal\common;D:\sourcesdk-minimal\public;D:\sourcesdk-minimal\game\client;D:\sourcesdk-minimal\game\shared;D:\sourcesdk-minimal\public\tier0;D:\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
+    <IncludePath>D:\garrysmod_common\include;D:\garrysmod_common\helpers\include;D:\garrysmod_common\sourcesdk-minimal\common;D:\garrysmod_common\sourcesdk-minimal\game\shared;D:\garrysmod_common\sourcesdk-minimal\public;D:\garrysmod_common\sourcesdk-minimal\game\client;D:\garrysmod_common\sourcesdk-minimal\public\tier0;D:\garrysmod_common\sourcesdk-minimal\public\tier1;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\source;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86_64\Release\gmcl_io_events_win64.lib</ImportLibrary>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\source;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>x86\Release\gmcl_io_events_win32.lib</ImportLibrary>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithSymbols|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4324;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_ALLOW_OLD_TYPES;GMOD_ALLOW_LIGHTUSERDATA;GMOD_MODULE_NAME="io_events";CLIENT_DLL;GMOD_USE_SOURCESDK;RAD_TELEMETRY_DISABLED;NO_STRING_T;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;_DLL_EXT=.dll;WIN32;COMPILER_MSVC;COMPILER_MSVC64;PLATFORM_64BITS;WIN64;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -216,9 +160,9 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\garrysmod_common\sourcesdk-minimal\lib\public\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>x86_64\ReleaseWithSymbols\gmcl_io_events_win64.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -226,8 +170,9 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4324;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_ALLOW_OLD_TYPES;GMOD_ALLOW_LIGHTUSERDATA;GMOD_MODULE_NAME="io_events";CLIENT_DLL;GMOD_USE_SOURCESDK;RAD_TELEMETRY_DISABLED;NO_STRING_T;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;_DLL_EXT=.dll;WIN32;COMPILER_MSVC;COMPILER_MSVC32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -241,19 +186,79 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\garrysmod_common\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>x86\ReleaseWithSymbols\gmcl_io_events_win32.lib</ImportLibrary>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DisableSpecificWarnings>4324;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_ALLOW_OLD_TYPES;GMOD_ALLOW_LIGHTUSERDATA;GMOD_MODULE_NAME="io_events";CLIENT_DLL;GMOD_USE_SOURCESDK;RAD_TELEMETRY_DISABLED;NO_STRING_T;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;_DLL_EXT=.dll;WIN32;COMPILER_MSVC;COMPILER_MSVC64;PLATFORM_64BITS;WIN64;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\garrysmod_common\sourcesdk-minimal\lib\public\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86_64\Release\gmcl_io_events_win64.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DisableSpecificWarnings>4324;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NDEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_ALLOW_OLD_TYPES;GMOD_ALLOW_LIGHTUSERDATA;GMOD_MODULE_NAME="io_events";CLIENT_DLL;GMOD_USE_SOURCESDK;RAD_TELEMETRY_DISABLED;NO_STRING_T;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;_DLL_EXT=.dll;WIN32;COMPILER_MSVC;COMPILER_MSVC32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\garrysmod_common\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>x86\Release\gmcl_io_events_win32.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4324;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_ALLOW_OLD_TYPES;GMOD_ALLOW_LIGHTUSERDATA;GMOD_MODULE_NAME="io_events";CLIENT_DLL;GMOD_USE_SOURCESDK;RAD_TELEMETRY_DISABLED;NO_STRING_T;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;_DLL_EXT=.dll;WIN32;COMPILER_MSVC;COMPILER_MSVC64;PLATFORM_64BITS;WIN64;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -266,9 +271,9 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\garrysmod_common\sourcesdk-minimal\lib\public\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>x86_64\Debug\gmcl_io_events_win64.lib</ImportLibrary>
       <AdditionalOptions>/NODEFAULTLIB:"libcmt" %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -277,8 +282,9 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_USE_SOURCESDK;CLIENT_DLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4324;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;STRICT;GMMODULE;IO_EVENTS_CLIENT;IS_SERVERSIDE=false;GMOD_ALLOW_OLD_TYPES;GMOD_ALLOW_LIGHTUSERDATA;GMOD_MODULE_NAME="io_events";CLIENT_DLL;GMOD_USE_SOURCESDK;RAD_TELEMETRY_DISABLED;NO_STRING_T;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;_DLL_EXT=.dll;WIN32;COMPILER_MSVC;COMPILER_MSVC32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -292,22 +298,32 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>tier0.lib;vstdlib.lib;ws2_32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\garrysmod_common\sourcesdk-minimal\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>x86\Debug\gmcl_io_events_win32.lib</ImportLibrary>
       <AdditionalOptions>/SAFESEH:NO /NODEFAULTLIB:"libcmt" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\source\main.cpp" />
+    <ClInclude Include="D:\garrysmod_common\sourcesdk-minimal\public\interfaces\interfaces.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\main.cpp" />
+    <ClCompile Include="D:\garrysmod_common\sourcesdk-minimal\interfaces\interfaces.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\helpers.vcxproj">
+      <Project>{F8D0E23C-64B0-61D8-6DC8-ECAED926C839}</Project>
+    </ProjectReference>
     <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\lua_shared.vcxproj">
       <Project>{5D4BA350-4903-E59D-B20A-BEF99EE17F8E}</Project>
     </ProjectReference>
-    <ProjectReference Include="D:\garrysmod_common\projects\windows\vs2019\tier1.vcxproj">
+    <ProjectReference Include="D:\garrysmod_common\sourcesdk-minimal\projects\windows\vs2019\tier1.vcxproj">
       <Project>{EA6A6D10-567F-95C1-1F01-39218BD491F2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:\garrysmod_common\sourcesdk-minimal\projects\windows\vs2019\LZMA.vcxproj">
+      <Project>{5945887C-457C-890D-EE68-6F10DA7E050F}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
