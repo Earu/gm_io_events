@@ -7,6 +7,7 @@ on:
     branches: [ main, master ]
   release:
     types: [ created ]
+  workflow_dispatch:  # Allow manual triggering
 
 permissions:
   contents: write
@@ -143,7 +144,7 @@ jobs:
         retention-days: 30
 
   release:
-    name: Create Release
+    name: Upload Release Assets
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
@@ -151,13 +152,22 @@ jobs:
     steps:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Display structure of downloaded files
+      run: ls -R artifacts
 
     - name: Prepare release assets
       run: |
         mkdir -p release
 
-        # Combine all artifacts into release directory
-        find . -name "*.dll" -exec cp {} release/ \;
+        # Copy all DLL files from artifact directories
+        find artifacts -name "*.dll" -exec cp {} release/ \;
+
+        # List what we're uploading
+        echo "Files to upload:"
+        ls -lh release/
 
         # Create a zip with all binaries
         cd release
