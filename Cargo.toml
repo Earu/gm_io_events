@@ -1,0 +1,26 @@
+[package]
+name = "gm_io_events"
+version = "1.0.0"
+edition = "2021"
+authors = ["Earu"]
+description = "Garry's Mod module for file system event monitoring"
+
+[lib]
+crate-type = ["cdylib"]
+name = "io_events"
+
+[dependencies]
+gmod = { version = "*", default-features = false, features = ["gmcl"] }
+notify = { version = "6", default-features = false, features = ["macos_fsevent"] }
+crossbeam = "0.8"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+

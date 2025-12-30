@@ -1,0 +1,174 @@
+name: Build GMod Binaries
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ created ]
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          # Windows targets
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            name: win64
+            extension: dll
+          - target: i686-pc-windows-msvc
+            os: windows-latest
+            name: win32
+            extension: dll
+          # Linux targets
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: linux64
+            extension: dll
+          - target: i686-unknown-linux-gnu
+            os: ubuntu-latest
+            name: linux
+            extension: dll
+          # macOS targets
+          - target: x86_64-apple-darwin
+            os: macos-15-intel
+            name: osx64
+            extension: dll
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            name: osxarm64
+            extension: dll
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: ${{ matrix.target }}
+
+    - name: Verify and install Rust target
+      run: |
+        echo "Available targets:"
+        rustup target list --installed
+        echo "Adding target if not present:"
+        rustup target add ${{ matrix.target }}
+        echo "Installed targets:"
+        rustup target list --installed
+
+    - name: Install Linux dependencies (32-bit)
+      if: matrix.target == 'i686-unknown-linux-gnu'
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get install -y gcc-multilib g++-multilib libc6-dev-i386
+
+    - name: Install Linux dependencies (64-bit)
+      if: matrix.target == 'x86_64-unknown-linux-gnu'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libssl-dev pkg-config
+
+    - name: Configure environment for 32-bit Linux
+      if: matrix.target == 'i686-unknown-linux-gnu'
+      run: |
+        echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
+
+    - name: Cache cargo dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-${{ matrix.target }}-
+          ${{ runner.os }}-cargo-
+
+    - name: Build binary
+      run: cargo build --release --target ${{ matrix.target }}
+
+    - name: Prepare artifacts (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Force -Path artifacts
+
+        # Copy and rename for server
+        Copy-Item "target/${{ matrix.target }}/release/gm_io_events.dll" "artifacts/gmsv_io_events_${{ matrix.name }}.dll"
+
+        # Copy and rename for client
+        Copy-Item "target/${{ matrix.target }}/release/gm_io_events.dll" "artifacts/gmcl_io_events_${{ matrix.name }}.dll"
+
+    - name: Prepare artifacts (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        mkdir -p artifacts
+
+        # Copy and rename for server (Linux uses .dll extension for GMod modules)
+        cp "target/${{ matrix.target }}/release/libgm_io_events.so" "artifacts/gmsv_io_events_${{ matrix.name }}.dll"
+
+        # Copy and rename for client
+        cp "target/${{ matrix.target }}/release/libgm_io_events.so" "artifacts/gmcl_io_events_${{ matrix.name }}.dll"
+
+    - name: Prepare artifacts (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        mkdir -p artifacts
+
+        # Copy and rename for server (macOS uses .dll extension for GMod modules)
+        cp "target/${{ matrix.target }}/release/libgm_io_events.dylib" "artifacts/gmsv_io_events_${{ matrix.name }}.dll"
+
+        # Copy and rename for client
+        cp "target/${{ matrix.target }}/release/libgm_io_events.dylib" "artifacts/gmcl_io_events_${{ matrix.name }}.dll"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: gm_io_events_${{ matrix.name }}
+        path: artifacts/*
+        retention-days: 30
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Prepare release assets
+      run: |
+        mkdir -p release
+
+        # Combine all artifacts into release directory
+        find . -name "*.dll" -exec cp {} release/ \;
+
+        # Create a zip with all binaries
+        cd release
+        zip -r ../gm_io_events_all_platforms.zip .
+        cd ..
+
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          release/*.dll
+          gm_io_events_all_platforms.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

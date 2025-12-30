@@ -1,5 +1,6 @@
-projects/windows/vs2019/.vs
-projects/windows/vs2019/x86
-projects/windows/vs2019/x86_64
-projects/linux/gmake
 .vscode/*
+
+# Rust build artifacts
+target/
+Cargo.lock
+bin/
