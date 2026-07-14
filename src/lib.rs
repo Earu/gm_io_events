@@ -128,6 +128,40 @@ fn convert_notify_event_to_file_event(event: NotifyEvent) -> Vec<FileChange> {
     changes
 }
 
+// Keep this DLL mapped for the lifetime of the process.
+//
+// Garry's Mod unloads and reloads binary modules across a map change. The watcher runs on a
+// background thread, and that thread does not stop the instant the watcher is dropped -- it can
+// be mid-sleep. If the DLL gets unmapped while it is still alive, it wakes up inside freed
+// memory and takes the game down with an access violation. notify gives us no way to *join* the
+// thread, so there is no Drop ordering that reliably wins that race.
+//
+// Pinning removes the race: FreeLibrary can be called as often as GMod likes, the code stays
+// mapped, and the watcher thread is always executing valid memory.
+#[cfg(windows)]
+fn pin_module() {
+    use std::os::raw::c_void;
+
+    const GET_MODULE_HANDLE_EX_FLAG_PIN: u32 = 0x1;
+    const GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS: u32 = 0x4;
+
+    extern "system" {
+        fn GetModuleHandleExW(flags: u32, name: *const u16, module: *mut *mut c_void) -> i32;
+    }
+
+    unsafe {
+        let mut handle: *mut c_void = std::ptr::null_mut();
+        GetModuleHandleExW(
+            GET_MODULE_HANDLE_EX_FLAG_PIN | GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
+            pin_module as *const () as *const u16, // any address inside this module
+            &mut handle,
+        );
+    }
+}
+
+#[cfg(not(windows))]
+fn pin_module() {}
+
 // Ugly but im not feeling like making if checks for each arch/os combination
 fn get_game_path() -> Result<String, String> {
     // Get the current working directory
@@ -242,6 +276,21 @@ fn destroy_dispatcher(lua: gmod::lua::State) {
 #[gmod13_open]
 fn gmod13_open(lua: gmod::lua::State) -> i32 {
     unsafe {
+        pin_module();
+
+        // Events queued while no Lua state existed (i.e. during a map change) belong to the old
+        // state; firing them at the new one would just be noise.
+        let queue = get_file_changes_queue();
+        while queue.pop().is_some() {}
+
+        // The watcher is process-global and survives map changes -- only the timer that drains
+        // it is per-Lua-state, so a reload just needs the timer re-armed.
+        let ptr = std::ptr::addr_of!(WATCHER);
+        if (*ptr).is_some() {
+            create_dispatcher(lua);
+            return 0;
+        }
+
         // Get the game directory path (current working directory)
         let game_path = match get_game_path() {
             Ok(path) => path,
@@ -295,11 +344,13 @@ fn gmod13_open(lua: gmod::lua::State) -> i32 {
 #[gmod13_close]
 fn gmod13_close(lua: gmod::lua::State) -> i32 {
     unsafe {
+        // Only tear down the per-Lua-state half. The watcher and its background thread are
+        // deliberately left running for the lifetime of the process.
+        //
+        // Dropping the watcher here is what crashed the game: GMod calls this on a map change
+        // and then immediately unloads the DLL, but the watcher thread can still be sleeping, so
+        // it would wake up in unmapped memory. We pin the module and keep the watcher instead.
         destroy_dispatcher(lua);
-
-        // Drop the watcher
-        let ptr = std::ptr::addr_of_mut!(WATCHER);
-        *ptr = None;
 
         // Clear the queue
         let queue = get_file_changes_queue();

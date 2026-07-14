@@ -12,3 +12,6 @@ crate-type = ["cdylib"]
 gmod = { version = "*", default-features = false, features = ["gmcl"] }
 notify = { version = "6", default-features = false, features = ["macos_fsevent"] }
 crossbeam = "0.8"
+
+[patch.crates-io]
+gmod = { path = "../gmod-rs/gmod" }
