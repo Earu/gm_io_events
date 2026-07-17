@@ -9,9 +9,6 @@ description = "Garry's Mod module for file system event monitoring"
 crate-type = ["cdylib"]
 
 [dependencies]
-gmod = { version = "*", default-features = false, features = ["gmcl"] }
+gmod = { git = "https://github.com/WilliamVenner/gmod-rs", default-features = false, features = ["gmcl"] }
 notify = { version = "6", default-features = false, features = ["macos_fsevent"] }
 crossbeam = "0.8"
-
-[patch.crates-io]
-gmod = { path = "../gmod-rs/gmod" }
